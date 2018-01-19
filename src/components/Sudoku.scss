@@ -1,0 +1,43 @@
+.Sudoku-Row {
+    display:flex;
+    flex-direction:row;
+
+    border-bottom:1px solid grey;
+    &:nth-child(3n) {
+        border-bottom: 2px solid black;
+    }
+
+    &:last-child {
+        border-bottom:0;
+    }
+
+    .Sudoku-Cell {
+        height:2em;
+        width:2em;
+        text-align:center;
+        flex-grow:1;
+        border-right:1px solid grey;
+
+        &:nth-child(3n) {
+            border-right:2px solid black;
+        }
+
+        &:last-child {
+            border-right:0;
+        }
+
+        input {
+            background:transparent;
+            border: 0;
+            width:90%;
+            height:90%;
+            text-align:center;
+        }
+    }
+}
+
+.Sudoku {
+    width:500px;
+    border:2px solid black;
+    margin:auto;
+}
