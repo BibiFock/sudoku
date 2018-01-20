@@ -1,37 +1,51 @@
-import cloneDeep from 'lodash/cloneDeep';
-// import { default as extend } from 'lodash/assignIn';
-// import { solver } from '../utils/sudoku';
+import cloneDeep from 'lodash/cloneDeep'
+import * as Actions from '../actions/Constants'
+import * as Utils from '../utils'
 
-const initialState = [
-    [8, 0, 0, 4, 0, 6, 0, 0, 7],
-    [0, 0, 0, 0, 0, 0, 4, 0, 0],
-    [0, 1, 0, 0, 0, 0, 6, 5, 0],
-    [5, 0, 9, 0, 3, 0, 7, 8, 0],
-    [0, 0, 0, 0, 7, 0, 0, 0, 0],
-    [0, 4, 8, 0, 2, 0, 1, 0, 3],
-    [0, 5, 2, 0, 0, 0, 0, 9, 0],
-    [0, 0, 1, 0, 0, 0, 0, 0, 0],
-    [3, 0, 0, 9, 0, 2, 0, 0, 5]
-];
-
-export default function(state = cloneDeep(initialState), action) {
+export default function(state, action) {
+    if (!state) {
+        state = {
+            grid: Utils.createEmptyGrid(),
+            gridSrc: Utils.createEmptyGrid(),
+            isEmpty: true
+        }
+    }
 
     switch (action.type) {
-        case 'UPDATE_CELL':
+        case Actions.UPDATE_CELL:
             let {row, col, val} = action.cell;
             let changedRow = [
-                ...state[row].slice(0, col),
+                ...state.grid[row].slice(0, col),
                 val,
-                ...state[row].slice(col + 1)
-            ]; // Omit using splice since it mutates the state
-            return [
-                ...state.slice(0, row),
-                changedRow,
-                ...state.slice(row + 1)
+                ...state.grid[row].slice(col + 1)
             ];
-
+            state.grid = [
+                ...state.grid.slice(0, row),
+                changedRow,
+                ...state.grid.slice(row + 1)
+            ];
+            break;
+        case Actions.SOLVE:
+            state.grid = Utils.solveIt(
+                ( !state.isEmpty ? state.gridSrc : state.grid),
+                true
+            );
+            break;
+        case Actions.LOAD_GRID:
+            let grid = Utils.getGrid(action.index)
+            state.grid = cloneDeep(grid)
+            state.gridSrc = cloneDeep(grid)
+            state.isEmpty = false
+            break;
+        case Actions.CLEAR:
+            state.grid = state.gridSrc;
+            break
         default:
-            return state;
+            break;
     }
+
+    state.isOk = Utils.validGrid(state.grid)
+
+    return cloneDeep(state);
 }
 

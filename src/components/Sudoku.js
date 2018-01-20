@@ -15,5 +15,5 @@ const Sudoku = ({ grid }) => (
 )
 
 export default connect(
-    state => ({ grid: state})
+    state => ({ grid: state.grid})
 )(Sudoku)

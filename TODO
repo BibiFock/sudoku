@@ -1,5 +1,11 @@
 [x] afficher grille
     -> finish show grid
     -> show input value grid sample here: ('016002400320009000040103000005000069009050300630000800000306010000400072004900680',)
-[ ] remplir grille
-[ ] résoudre
+[x] remplir grille
+[x] résoudre
+[ ] faire les tests
+[ ] BONUS
+    [x] griser l'icône de résolution si une valeur dans la grille est erronnée
+    [ ] résoudre une grille ajoutée manuellement
+    [ ] design icône
+    [ ] responsive powa
