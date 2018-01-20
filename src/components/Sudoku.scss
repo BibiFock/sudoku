@@ -32,6 +32,12 @@
             width:90%;
             height:90%;
             text-align:center;
+
+            &.fixed {
+                font-weight:bold;
+            }
+
+
         }
     }
 }

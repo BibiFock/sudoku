@@ -1,33 +1,71 @@
 import React from 'react'
+import { connect } from 'react-redux'
+import { updateCell } from '../actions/'
 import classNames from 'classnames'
 
-export default class Cell extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            value: props.value
-        };
-
-        this.handleChange = this.handleChange.bind(this);
+class Cell extends React.Component {
+    componentWillMount() {
+        const { val } = this.props.cell;
+        this.setState({isFixed: val ? true : false});
     }
 
-    handleChange(event) {
-        if (!/^[0-9]$/.test(event.target.value)) {
-            return false;
-        }
-
-        this.setState({ value: event.target.value });
-    }
-
-    render() {
+    render ()  {
+        const { cell, onCellChange } = this.props;
         var cellClass = classNames(
             'Sudoku-Cell',
-            'y' + (this.props.y)
+            'y' + (cell.col),
         );
-        return <div className={cellClass}>
-                <input type="text" maxLength="1"
-                    value={this.state.value}
-                    onChange={this.handleChange}/>
+        var onClick = (event) => {
+            event.preventDefault()
+            event.target.select()
+        }
+
+        var onChange = (event) => {
+            if (!/^[0-9]$/.test(event.target.value)) {
+                event.preventDefault()
+                event.target.select()
+                return false;
+            }
+            cell.val = event.target.value
+
+            onCellChange(cell)
+        }
+
+        var inputClass = classNames(
+            { 'fixed': this.state.isFixed }
+        );
+        return (
+            <div className={cellClass}>
+            <input type="text" maxLength="1"
+                value={(cell.val ? cell.val : ' ')}
+                className={inputClass}
+                onClick={onClick}
+                onChange={onChange}/>
             </div>
+        )
     }
 }
+
+const mapStateToProps = (state, ownProps) => {
+    console.log(ownProps);
+    return {
+        cell: {
+            val: state[ownProps.row][ownProps.col],
+            col: ownProps.col,
+            row: ownProps.row,
+        }
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onCellChange: (cell) => {
+            dispatch(updateCell(cell))
+        }
+    }
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Cell)
