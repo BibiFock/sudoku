@@ -2,13 +2,15 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { solveIt, clearIt, loadGrid } from '../actions'
 
+import './Solver.css'
+
 const Solver = ({ dispatch, haveError }) => {
     let solve = () => dispatch(solveIt())
     let clear = () => dispatch(clearIt())
     let loadIt = (nb) => dispatch(loadGrid(nb))
 
     return (
-        <div>
+        <div className="actions">
             <button disabled={haveError ? 'disabled': ''}
                 type="button" onClick={solve}>résoudre</button>
             <button type="button" onClick={clear}>clear</button>

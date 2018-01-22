@@ -6,48 +6,52 @@ import { getForbiddenNumbers } from '../utils/'
 
 class Cell extends React.Component {
     componentWillMount() {
-        const { val } = this.props.cell;
-        this.setState({isFixed: val ? true : false});
+        this.onChange = this.onChange.bind(this)
+        this.onClick = this.onClick.bind(this)
+    }
+
+    onClick (event) {
+        if (this.props.cell.isFixed) {
+            return false
+        }
+        event.preventDefault()
+        event.target.select()
+    }
+
+    onChange (event) {
+        let { cell, onCellChange } = this.props;
+        if (cell.isFixed) {
+            return false
+        }
+        if (!/^[0-9]{0,1}$/.test(event.target.value)) {
+            event.preventDefault()
+            event.target.select()
+            return false;
+        }
+        cell.val = parseInt(event.target.value, 10)
+
+        onCellChange(cell)
     }
 
     render ()  {
-        const { cell, onCellChange } = this.props;
+        const { cell } = this.props;
         var cellClass = classNames(
             'Sudoku-Cell',
             'y' + (cell.col),
         );
 
-        var onClick = (event) => {
-            event.preventDefault()
-            event.target.select()
-        }
-
-        var onChange = (event) => {
-            if (!/^[0-9]{0,1}$/.test(event.target.value)) {
-                event.preventDefault()
-                event.target.select()
-                return false;
-            }
-            cell.val = parseInt(event.target.value, 10)
-
-            onCellChange(cell)
-        }
-
-        if (cell.isFixed) {
-            onChange = onClick = () => false
-        }
-
         var inputClass = classNames(
             { 'fixed': cell.isFixed },
             { 'error': cell.error }
         );
+
         return (
             <div className={cellClass}>
             <input type="text" maxLength="1"
                 value={(cell.val ? cell.val : ' ')}
                 className={inputClass}
-                onClick={onClick}
-                onChange={onChange}/>
+                onClick={this.onClick}
+                onChange={this.onChange}/>
             </div>
         )
     }
