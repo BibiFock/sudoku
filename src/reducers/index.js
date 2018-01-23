@@ -27,8 +27,7 @@ export default function(state, action) {
             break;
         case Actions.SOLVE:
             state.grid = Utils.solveIt(
-                ( !state.isEmpty ? state.gridSrc : state.grid),
-                true
+                ( !state.isEmpty ? state.gridSrc : state.grid)
             );
             break;
         case Actions.LOAD_GRID:
@@ -38,7 +37,11 @@ export default function(state, action) {
             state.isEmpty = false
             break;
         case Actions.CLEAR:
-            state.grid = state.gridSrc;
+            state = {
+                grid: Utils.createEmptyGrid(),
+                gridSrc: Utils.createEmptyGrid(),
+                isEmpty: true
+            };
             break
         default:
             break;

@@ -89,7 +89,7 @@ export function getAvailableNumbers(grid, row, col) {
     return options
 }
 
-export function solveIt(grid, first) {
+export function solveIt(grid) {
     grid = cloneDeep(grid)
 
     let isChange = false;
@@ -110,7 +110,7 @@ export function solveIt(grid, first) {
                 continue
             }
 
-            let state = solveIt(grid, first+1)
+            let state = solveIt(grid)
             if (state !== false) {
                 return state
             }
