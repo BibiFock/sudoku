@@ -11,11 +11,13 @@ const Solver = ({ dispatch, haveError }) => {
 
     return (
         <div className="actions">
-            <button disabled={haveError ? 'disabled': ''}
-                type="button" onClick={solve}>résoudre</button>
-            <button type="button" onClick={clear}>clear</button>
-            <button type="button" onClick={() => loadIt(0)}>load grid 1</button>
-            <button type="button" onClick={() => loadIt(1)}>load grid 2</button>
+            <div className="actions-body">
+                <button type="button" onClick={() => loadIt(0)}>load grid 1</button>
+                <button type="button" onClick={() => loadIt(1)}>load grid 2</button>
+                <button type="button" onClick={clear}>clear</button>
+                <button disabled={haveError ? 'disabled': ''}
+                    type="button" onClick={solve}>résoudre</button>
+            </div>
         </div>
     )
 }

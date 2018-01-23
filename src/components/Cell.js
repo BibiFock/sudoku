@@ -23,7 +23,12 @@ class Cell extends React.Component {
         if (cell.isFixed) {
             return false
         }
-        if (!/^[0-9]{0,1}$/.test(event.target.value)) {
+
+        if (event.target.value === '') {
+            event.target.value = 0;
+        }
+
+        if (!/^[0-9]{1,1}$/.test(event.target.value)) {
             event.preventDefault()
             event.target.select()
             return false;
