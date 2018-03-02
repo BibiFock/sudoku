@@ -4,7 +4,7 @@ import { solveIt, clearIt, loadGrid } from '../actions'
 
 import './Solver.css'
 
-const Solver = ({ dispatch, haveError }) => {
+export const Solver = ({ dispatch, haveError }) => {
     let solve = () => dispatch(solveIt())
     let clear = () => dispatch(clearIt())
     let loadIt = (nb) => dispatch(loadGrid(nb))
@@ -20,8 +20,7 @@ const Solver = ({ dispatch, haveError }) => {
             </div>
         </div>
     )
-}
-
+};
 
 export default connect(
     (state) => ({
