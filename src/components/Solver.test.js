@@ -2,10 +2,13 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 import configureStore from 'redux-mock-store';
 import { Provider } from 'react-redux';
+import { createStore } from 'redux';
+
 
 import SolverConnected, { Solver } from './Solver';
-import { solveIt, loadGrid, clearIt } from '../actions';
+import { solveIt, loadGrid, clearIt, updateCell } from '../actions';
 import * as Actions from '../actions/Constants';
+import reducers from '../reducers';
 
 describe('>>> Solver --- render components', () => {
     let wrapper;
@@ -82,5 +85,22 @@ describe('>>> Solver - React + REDUX (mount + wrapping provider) ', () => {
         expect(actions[1].type).toBe(Actions.CLEAR);
         expect(actions[2].type).toBe(Actions.LOAD_GRID);
     });
-
 });
+
+describe('>>> Solver --- REACT-REDUX (actual Store + reducers) more of Integration Testing', () => {
+    let store,wrapper
+
+    beforeEach(()=>{
+        store = createStore(reducers)
+        wrapper = mount( <Provider store={store}><SolverConnected /></Provider> )
+    })
+
+    it('+++ check in error resolved unavailable', () => {
+        store.dispatch(loadGrid(0));
+        store.dispatch(updateCell({row:0, col:0, val:7}));
+        expect(
+            wrapper.find('button[disabled=""]').at(0).text()
+        ).toEqual('résoudre');
+    });
+});
+
